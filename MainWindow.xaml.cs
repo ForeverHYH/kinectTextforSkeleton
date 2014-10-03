@@ -29,9 +29,19 @@ namespace kinectTextforSkeleton
         {    
             InitializeComponent();
             skeletonBrushes = new Brush[]  { Brushes.Black, Brushes.Crimson, Brushes.Indigo, Brushes.DodgerBlue, Brushes.Purple, Brushes.Pink };   
-            KinectSensor.KinectSensors.StatusChanged += KinectSensors_StatusChanged;    
-            this.KinectDevice = KinectSensor.KinectSensors.FirstOrDefault(x => x.Status == KinectStatus.Connected);
+            KinectSensor.KinectSensors.StatusChanged += KinectSensors_StatusChanged; //相当于addTarget,给这个事件（statusChanged）加一个事件侦听函数
+            //this.KinectDevice = KinectSensor.KinectSensors.FirstOrDefault(isConnect);
+            this.KinectDevice = KinectSensor.KinectSensors.FirstOrDefault(k => k.Status == KinectStatus.Connected); //赋值时调用set函数，=后面的相当于value
+            //都是返回满足条件的第一个元素，如果没有该元素，则返回null,即返回第一个连接的kinect
+            //lambda表达式，匿名函数，FirstOrDefault需要传入函数，所以k => k.Status == KinectStatus.Connected相当于一个没写函数名的函数,等价于函数isConnect
+       //  private bool isConnect(Microsoft.Kinect.KinectSensor k)
+       //  {
+       //     return k.Status == KinectStatus.Connected;
+       //  }
         }
+
+       
+
         public KinectSensor KinectDevice
         {   
             get 
@@ -40,7 +50,7 @@ namespace kinectTextforSkeleton
             }   
             set    
             {       
-                if (this.kinectDevice != value)        
+                if (this.kinectDevice != value)        //value是关键字，相当于set函数里面传进来的参数
                 {            //Uninitialize           
                     if (this.kinectDevice != null)           
                     {                
@@ -57,7 +67,7 @@ namespace kinectTextforSkeleton
                         {                    
                             this.kinectDevice.SkeletonStream.Enable();
                             this.frameSkeletons = new Skeleton[this.kinectDevice.SkeletonStream.FrameSkeletonArrayLength];
-                            this.kinectDevice.SkeletonFrameReady += KinectDevice_SkeletonFrameReady;  
+                            this.kinectDevice.SkeletonFrameReady += KinectDevice_SkeletonFrameReady;  //如果SkeletonFrameReady了，就添加一个事件侦听
                             this.kinectDevice.Start(); 
                         }            
                     }       
@@ -93,24 +103,25 @@ namespace kinectTextforSkeleton
 
         private void KinectDevice_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {    
-            using (SkeletonFrame frame = e.OpenSkeletonFrame())
+            using (SkeletonFrame frame = e.OpenSkeletonFrame()) //using的意义是括号里面的内容只对using后面的大括号有用，出了大括号自动释放内存数据
             {       
                 if (frame != null) 
                 {           
-                    Polyline figure; 
+                    Polyline figure; //折线
                     Brush userBrush; 
                     Skeleton skeleton;  
 
-                    LayoutRoot.Children.Clear(); 
-                    frame.CopySkeletonDataTo(this.frameSkeletons);  
+                    LayoutRoot.Children.Clear(); //清空窗口 
+                    frame.CopySkeletonDataTo(this.frameSkeletons);   //把当前的frame的对象的数据放在数组中以便后续遍历
 
-                    for (int i = 0; i < this.frameSkeletons.Length; i++)
+                    for (int i = 0; i < this.frameSkeletons.Length; i++) //length是用户的个数，一个用户对应一个笔刷
                     {               
                         skeleton = this.frameSkeletons[i];
 
-                        if (skeleton.TrackingState == SkeletonTrackingState.Tracked)
+                        if (skeleton.TrackingState == SkeletonTrackingState.Tracked)  //如果识别状态是已经识别（能够识别出用户），就执行后续代码
                         {                   
-                            userBrush = this.skeletonBrushes[i % this.skeletonBrushes.Length]; 
+                            userBrush = this.skeletonBrushes[i % this.skeletonBrushes.Length]; //选一个笔刷绘制人体
+
                             //绘制头和躯干                   
                             figure = CreateFigure(skeleton, userBrush, new[] { JointType.Head, JointType.ShoulderCenter, JointType.ShoulderLeft, JointType.Spine, 
                                                                   JointType.ShoulderRight, JointType.ShoulderCenter, JointType.HipCenter
@@ -140,23 +151,23 @@ namespace kinectTextforSkeleton
                 }   
             }
         }
-
+        
         private Polyline CreateFigure(Skeleton skeleton, Brush brush, JointType[] joints) 
         {
             Polyline figure = new Polyline();
 
-            figure.StrokeThickness = 8;
-            figure.Stroke = brush; 
+            figure.StrokeThickness = 8; //线宽
+            figure.Stroke = brush;   //笔触
 
             for (int i = 0; i < joints.Length; i++)
             { 
-                figure.Points.Add(GetJointPoint(skeleton.Joints[joints[i]]));
+                figure.Points.Add(GetJointPoint(skeleton.Joints[joints[i]])); //坐标转换过后把关键点赋值给折线对象
             } 
 
             return figure; 
         }
 
-        private Point GetJointPoint(Joint joint)
+        private Point GetJointPoint(Joint joint)  //舍弃了Z值，三维转换成二维坐标，再适应窗口大小
         {
             DepthImagePoint point = this.kinectDevice.CoordinateMapper.MapSkeletonPointToDepthPoint(joint.Position, this.KinectDevice.DepthStream.Format);
             point.X *= (int)this.LayoutRoot.ActualWidth / KinectDevice.DepthStream.FrameWidth; 
