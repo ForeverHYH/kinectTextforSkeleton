@@ -1,0 +1,13 @@
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\bin\Debug\kinectTextforSkeleton.exe.config
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\bin\Debug\kinectTextforSkeleton.exe
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\bin\Debug\kinectTextforSkeleton.pdb
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.csprojResolveAssemblyReference.cache
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\MainWindow.baml
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\MainWindow.g.cs
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\App.g.cs
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton_MarkupCompile.cache
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.g.resources
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.Properties.Resources.resources
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.csproj.GenerateResource.Cache
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.exe
+c:\users\胡永豪\documents\visual studio 2013\Projects\kinectTextforSkeleton\kinectTextforSkeleton\obj\Debug\kinectTextforSkeleton.pdb
